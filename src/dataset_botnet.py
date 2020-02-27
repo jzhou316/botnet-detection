@@ -7,10 +7,10 @@ import numpy as np
 from tqdm import tqdm
 from torch.utils.data import Dataset
 
-from utils import makedirs, decide_download, download_url, extract_tar
-from data_botnet_pyg import GraphData
-from data_botnet_dgl import build_graph_from_dict, h5group_to_dict
-from data_botnet_nx import nxgraph
+from .utils import makedirs, decide_download, download_url, extract_tar
+from .data_botnet_pyg import GraphData
+from .data_botnet_dgl import build_graph_from_dict, h5group_to_dict
+from .data_botnet_nx import nxgraph
 
 
 def files_exist(files):
