@@ -31,7 +31,7 @@ class BotnetDataset(Dataset):
     
     url = ''
     
-    def __init__(self, name='chord', root='data/botnet', split='train', split_idx=None, add_nfeat_ones=True, in_memory=False, graph_format='pyg'):
+    def __init__(self, name='chord', root='data/botnet', split='train', split_idx=None, add_nfeat_ones=True, in_memory=True, graph_format='pyg'):
         super().__init__()
         assert name in ['chord', 'debru', 'kadem', 'leet']
         assert split in ['train', 'val', 'test']
