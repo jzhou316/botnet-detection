@@ -23,3 +23,5 @@ The choices for `graph_format` are (for different graph data format according to
 - 'dgl' for [DGL](https://github.com/dmlc/dgl) 
 - 'nx' for [NetworkX](https://github.com/networkx/networkx)
 - 'dict' for plain python dictionary
+
+Based on different choices of the above argument, when indexing the botnet dataset object, it will return a corresponding graph data object defined by the specified graph library.
