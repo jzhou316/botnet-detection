@@ -3,6 +3,7 @@ import os.path as osp
 import pickle
 
 import h5py
+import deepdish as dd
 import numpy as np
 from tqdm import tqdm
 from torch.utils.data import Dataset
@@ -29,7 +30,7 @@ class BotnetDataset(Dataset):
         in_memory (bool, optional): whether to read all the graphs into memory. Default: False
     """
     
-    url = ''
+    url = 'https://sandbox.zenodo.org/record/503403/files/botnet_chord.tar.gz'
     
     def __init__(self, name='chord', root='data/botnet', split='train', split_idx=None, add_nfeat_ones=True, in_memory=True, graph_format='pyg'):
         super().__init__()
@@ -100,8 +101,8 @@ class BotnetDataset(Dataset):
         return [osp.join(self.processed_dir, f) for f in self.processed_file_names]
     
     def download(self):
-        breakpoint()
-        if osp.exists(self.raw_paths[0]):
+#         breakpoint()
+        if osp.exists(self.raw_paths[0]) or files_exist(self.raw_paths[1:3]):
             return
         
         if files_exist(self.processed_paths):
@@ -109,8 +110,8 @@ class BotnetDataset(Dataset):
         
         makedirs(self.raw_dir)
         
-        if decide_download(url):
-            path = download_url(url, self.raw_dir)
+        if decide_download(self.url):
+            path = download_url(self.url, self.raw_dir)
             extract_tar(path, self.raw_dir)
             os.unlink(path)
         else:
@@ -118,7 +119,7 @@ class BotnetDataset(Dataset):
             exit(-1)
     
     def process(self):
-        breakpoint()
+#         breakpoint()
         if files_exist(self.processed_paths):
             return
         
@@ -127,6 +128,9 @@ class BotnetDataset(Dataset):
             path = extract_tar(self.raw_paths[0], self.raw_dir)
 #             os.unlink(self.raw_paths[0])
         
+        print('Processing...')
+        makedirs(self.processed_dir)
+    
         if self.split_idx is None:
             # default data split
             split_idx = pickle.load(open(self.raw_paths[2], 'rb'))
@@ -171,6 +175,8 @@ class BotnetDataset(Dataset):
                     g.attrs['ori_graph_ids'] = ori_graph_ids
                     
                 print('{} split --- number of graphs: {}, data saved at {}.'.format(split, n + 1, path))
+        
+        print('Done!')
      
     def __len__(self):
         return self.num_graphs
@@ -193,7 +199,7 @@ class BotnetDataset(Dataset):
             return graph_dict
         
     def __repr__(self):
-        return f'{self.__class__.__name__}({len(self)})'
+        return f'{self.__class__.__name__}(botnet topology: {self.name}, data split: {self.split}, number of graphs: {len(self)}, graph format: {self.graph_format})'
 
 
 if __name__ == '__main__':
