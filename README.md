@@ -25,3 +25,31 @@ The choices for `graph_format` are (for different graph data format according to
 - 'dict' for plain python dictionary
 
 Based on different choices of the above argument, when indexing the botnet dataset object, it will return a corresponding graph data object defined by the specified graph library.
+
+## To Evaluate a Model Predictor
+
+Include the directory `src` in your Python search path (can be done via `sys.path.insert(0, 'path_to_src')`), and load the dataset class and the evaluation function as below:
+
+```
+from src.dataset_botnet import BotnetDataset
+from src.evaluation import eval_predictor
+```
+
+Then define a simple wrapper of your model as a predictor function which takes in a graph from the dataset and output the prediction probabilities for the positive class (as well as the loss from the forward pass, optionally). Some examples are [here](./src/evaluation.py#L99).
+
+We compare evaluations on the test set, as below:
+
+```
+from src.evaluation import PygModelPredictor
+
+botnet_dataset_test = BotnetDataset(name='chord', split='test', graph_format='pyg')
+predictor = PygModelPredictor(model)    # 'model' is some graph learning model
+result_dict_avg, loss_avg = eval_predictor(botnet_dataset_test, model)
+
+print(f'Testing --- loss: {loss_avg:.5f}')
+print(' ' * 10 + ', '.join(['{}: {:.5f}'.format(k, v) for k, v in result_dict_avg.items()]))
+
+test_auroc = result_dict_avg['auroc']
+```
+
+And we mainly compare the AUC-ROC metric to compare across models.
