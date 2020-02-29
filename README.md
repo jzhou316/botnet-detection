@@ -46,7 +46,7 @@ from src.evaluation import PygModelPredictor
 
 botnet_dataset_test = BotnetDataset(name='chord', split='test', graph_format='pyg')
 predictor = PygModelPredictor(model)    # 'model' is some graph learning model
-result_dict_avg, loss_avg = eval_predictor(botnet_dataset_test, model)
+result_dict_avg, loss_avg = eval_predictor(botnet_dataset_test, predictor)
 
 print(f'Testing --- loss: {loss_avg:.5f}')
 print(' ' * 10 + ', '.join(['{}: {:.5f}'.format(k, v) for k, v in result_dict_avg.items()]))
@@ -55,3 +55,12 @@ test_auroc = result_dict_avg['auroc']
 ```
 
 And we mainly compare the AUROC (area under the ROC curve) metric to compare across models.
+
+## Graph Neural Network Results
+
+We run graph neural network models on each of the topologies, and our results are as below:
+
+| Topology | Chord | de Bruijn | Kademlia | LEET-Chord | C2 | P2P |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Test AUROC | | | | | | |
+| Average | ||||||
