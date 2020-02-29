@@ -52,4 +52,4 @@ print(' ' * 10 + ', '.join(['{}: {:.5f}'.format(k, v) for k, v in result_dict_av
 test_auroc = result_dict_avg['auroc']
 ```
 
-And we mainly compare the AUC-ROC metric to compare across models.
+And we mainly compare the AUROC (area under the ROC curve) metric to compare across models.
