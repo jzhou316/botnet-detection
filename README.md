@@ -1,7 +1,7 @@
 # botnet-detection
 Topological botnet detection datasets and graph neural network applications
 
-## To Load Botnet Data
+## To Load the Botnet Data
 
 Include the directory `src` in your Python search path (can be done via `sys.path.insert(0, 'path_to_src')`), and import `BotnetDataset` class by `from src.dataset_botnet import BotnetDataset`.
 
