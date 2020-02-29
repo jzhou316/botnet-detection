@@ -85,9 +85,10 @@ We run graph neural network models on each of the topologies, and our results ar
     <td>  </td>
     <td>  </td>
   </tr>
-  
+  <thead>
   <tr>
     <td> Average </td>
     <td colspan="6"> 0 </td>
   </tr>
+  </thead>
 </table>
