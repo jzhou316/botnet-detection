@@ -13,10 +13,12 @@ botnet_dataset_test = BotnetDataset(name='chord', split='test', graph_format='py
 ```
 
 The choices for `name` are (indicating different botnet topologies):
-- 'chord'
-- 'debru'
-- 'kadem'
-- 'leet'
+- 'chord' (synthetic, 10k botnet nodes)
+- 'debru' (synthetic, 10k botnet nodes)
+- 'kadem' (synthetic, 10k botnet nodes)
+- 'leet' (synthetic, 10k botnet nodes)
+- 'c2' (real, ~3k botnet nodes)
+- 'p2p' (real, ~3k botnet nodes)
 
 The choices for `graph_format` are (for different graph data format according to different graph libraries):
 - 'pyg' for [PyTorch Geometric](https://github.com/rusty1s/pytorch_geometric)
