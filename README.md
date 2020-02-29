@@ -65,7 +65,7 @@ We run graph neural network models on each of the topologies, and our results ar
 <!--| Test AUROC | | | | | | |-->
 <!--| Average Over Topologies <td colspan=6> 0 </td>|-->
 
-<table>
+<table align="center">
   <tr>
     <td> Topology </td>
     <td> Chord </td>
@@ -85,10 +85,8 @@ We run graph neural network models on each of the topologies, and our results ar
     <td>  </td>
     <td>  </td>
   </tr>
-  <thead>
   <tr>
     <td> Average </td>
     <td colspan="6"> 0 </td>
   </tr>
-  </thead>
 </table>
