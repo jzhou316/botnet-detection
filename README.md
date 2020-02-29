@@ -60,7 +60,34 @@ And we mainly compare the AUROC (area under the ROC curve) metric to compare acr
 
 We run graph neural network models on each of the topologies, and our results are as below:
 
-| Topology | Chord | de Bruijn | Kademlia | LEET-Chord | C2 | P2P |
-|-
-| Test AUROC | | | | | | |
-| Average Over Topologies <td colspan=6> 0
+<!--| Topology | Chord | de Bruijn | Kademlia | LEET-Chord | C2 | P2P |-->
+<!--|:---:|:---:|:---:|:---:|:---:|:---:|:---:|-->
+<!--| Test AUROC | | | | | | |-->
+<!--| Average Over Topologies <td colspan=6> 0 </td>|-->
+
+<table>
+  <tr>
+    <td> Topology </td>
+    <td> Chord </td>
+    <td> de Bruijn </td>
+    <td> Kademlia </td>
+    <td> LEET-Chord </td>
+    <td> C2 </td>
+    <td> P2P </td>
+  </tr>
+    
+  <tr>
+    <td> Test AUROC </td>
+    <td>  </td>
+    <td>  </td>
+    <td>  </td>
+    <td>  </td>
+    <td>  </td>
+    <td>  </td>
+  </tr>
+  
+  <tr>
+    <td> Average </td>
+    <td colspan="6"> 0 </td>
+  </tr>
+</table>
