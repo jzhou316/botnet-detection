@@ -34,7 +34,7 @@ class BotnetDataset(Dataset):
     def __init__(self, name='chord', root='data/botnet', split='train', split_idx=None, add_nfeat_ones=True,
                  in_memory=True, graph_format='pyg'):
         super().__init__()
-        assert name in ['chord', 'debru', 'kadem', 'leet']
+        assert name in ['chord', 'debru', 'kadem', 'leet', 'c2', 'p2p']
         assert split in ['train', 'val', 'test']
         assert graph_format in ['pyg', 'dgl', 'nx', 'dict']
 
