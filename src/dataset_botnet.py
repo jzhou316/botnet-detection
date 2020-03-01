@@ -9,9 +9,8 @@ from tqdm import tqdm
 from torch.utils.data import Dataset
 
 from .url_utils import makedirs, decide_download, download_url, extract_tar
-from .data_botnet_pyg import GraphData
-from .data_botnet_dgl import build_graph_from_dict, h5group_to_dict
-from .data_botnet_nx import nxgraph
+from .data_utils import (h5group_to_dict, build_graph_from_dict_pyg,
+                         build_graph_from_dict_dgl, build_graph_from_dict_nx)
 
 
 def files_exist(files):
@@ -53,7 +52,7 @@ class BotnetDataset(Dataset):
         self.process()
 
         self.in_memory = in_memory
-        self.graph_format = graph_format
+        self._graph_format = graph_format
         if split == 'train':
             self.path = self.processed_paths[0]
         elif split == 'val':
@@ -100,6 +99,10 @@ class BotnetDataset(Dataset):
         r"""The filepaths to find in the :obj:`self.processed_dir`
         folder in order to skip the processing."""
         return [osp.join(self.processed_dir, f) for f in self.processed_file_names]
+
+    @property
+    def graph_format(self):
+        return self._graph_format
 
     def download(self):
         # breakpoint()
@@ -191,16 +194,17 @@ class BotnetDataset(Dataset):
             raise ValueError
 
         if self.graph_format == 'pyg':
-            return GraphData(graph_dict)
+            return build_graph_from_dict_pyg(graph_dict)
         elif self.graph_format == 'dgl':
-            return build_graph_from_dict(graph_dict)
+            return build_graph_from_dict_dgl(graph_dict)
         elif self.graph_format == 'nx':
-            return nxgraph(graph_dict)
+            return build_graph_from_dict_nx(graph_dict)
         elif self.graph_format == 'dict':
             return graph_dict
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(botnet topology: {self.name}, data split: {self.split}, number of graphs: {len(self)}, graph format: {self.graph_format})'
+        return f'{self.__class__.__name__}(botnet topology: {self.name}, data split: {self.split},' \
+               f'number of graphs: {len(self)}, graph format: {self.graph_format})'
 
 
 if __name__ == '__main__':
