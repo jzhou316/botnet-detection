@@ -203,8 +203,8 @@ class BotnetDataset(Dataset):
             return graph_dict
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(botnet topology: {self.name} | data split: {self.split} | ' \
-               f'number of graphs: {len(self)} | graph format: {self.graph_format})'
+        return f'{self.__class__.__name__}(topology: {self.name} | split: {self.split} | ' \
+               f'#graphs: {len(self)} | graph format: {self.graph_format})'
 
 
 if __name__ == '__main__':
