@@ -29,7 +29,13 @@ class BotnetDataset(Dataset):
         in_memory (bool, optional): whether to read all the graphs into memory. Default: False
     """
 
-    url = 'https://sandbox.zenodo.org/record/503403/files/botnet_chord.tar.gz'
+    # url = 'https://sandbox.zenodo.org/record/503403/files/botnet_chord.tar.gz'
+    urls = {'chord': 'https://zenodo.org/record/3689089/files/botnet_chord.tar.gz',
+            'debru': 'https://zenodo.org/record/3689089/files/botnet_debru.tar.gz',
+            'kadem': 'https://zenodo.org/record/3689089/files/botnet_kadem.tar.gz',
+            'leet': 'https://zenodo.org/record/3689089/files/botnet_leet.tar.gz',
+            'c2': 'https://zenodo.org/record/3689089/files/botnet_c2.tar.gz',
+            'p2p': 'https://zenodo.org/record/3689089/files/botnet_p2p.tar.gz'}
 
     def __init__(self, name='chord', root='data/botnet', split='train', split_idx=None, add_nfeat_ones=True,
                  in_memory=True, graph_format='pyg'):
@@ -42,6 +48,7 @@ class BotnetDataset(Dataset):
             root = osp.expanduser(osp.normpath(root))
 
         self.name = name
+        self.url = self.urls[name]
         self.root = root
         self.split = split
         self.split_idx = split_idx
@@ -208,7 +215,7 @@ class BotnetDataset(Dataset):
 
 
 if __name__ == '__main__':
-    dataset = BotnetDataset(split='train')
+    dataset = BotnetDataset(name='chord', split='train', graph_format='pyg')
     print(len(dataset))
     print(dataset[0])
     breakpoint()

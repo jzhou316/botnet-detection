@@ -7,9 +7,11 @@ import sys
 import torch
 
 from src.evaluation import eval_metrics, eval_predictor, PygModelPredictor
-form src.utils import time_since, EarlyStopping, logging_config, GraphDataLoader
+from src.train_utils import time_since, logging_config
+from src.earlystop import EarlyStopping
 from src.model import GCNModel
 from src.dataset_botnet import BotnetDataset
+from src.dataloader import GraphDataLoader
 
 
 # ============== some default parameters =============
