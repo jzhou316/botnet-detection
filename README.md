@@ -1,12 +1,14 @@
 # botnet-detection
-Topological botnet detection datasets and graph neural network applications
+Topological botnet detection datasets and automatic detection with graph neural networks.
 
 ## To Load the Botnet Data
 
-Include the directory `src` in your Python search path (can be done via `sys.path.insert(0, 'path_to_src')`), and import `BotnetDataset` class by `from src.dataset_botnet import BotnetDataset`.
+Include the directory `src` in your Python search path (can be done via `sys.path.insert(0, 'path_to_src')`), and import `BotnetDataset` class by `from src.data.dataset_botnet import BotnetDataset`.
 
 Load the botnet dataset, which can be compatible with most of the graph learning libraries by specifying the `graph_format` argument:
 ```
+from src.data.dataset_botnet import BotnetDataset
+
 botnet_dataset_train = BotnetDataset(name='chord', split='train', graph_format='pyg')
 botnet_dataset_val = BotnetDataset(name='chord', split='val', graph_format='pyg')
 botnet_dataset_test = BotnetDataset(name='chord', split='test', graph_format='pyg')
@@ -28,13 +30,22 @@ The choices for `graph_format` are (for different graph data format according to
 
 Based on different choices of the above argument, when indexing the botnet dataset object, it will return a corresponding graph data object defined by the specified graph library.
 
+Construct the data loader with automatic batching (agnostic to the specific graph learning library):
+```
+from src.data.dataloader import GraphDataLoader
+
+train_loader = GraphDataLoader(botnet_dataset_train, batch_size=2, shuffle=False, num_workers=0)
+val_loader = GraphDataLoader(botnet_dataset_val, batch_size=1, shuffle=False, num_workers=0)
+test_loader = GraphDataLoader(botnet_dataset_test, batch_size=1, shuffle=False, num_workers=0)
+```
+
 ## To Evaluate a Model Predictor
 
 Include the directory `src` in your Python search path (can be done via `sys.path.insert(0, 'path_to_src')`), and load the dataset class and the evaluation function as below:
 
 ```
-from src.dataset_botnet import BotnetDataset
-from src.evaluation import eval_predictor
+from src.data.dataset_botnet import BotnetDataset
+from src.eval.evaluation import eval_predictor
 ```
 
 Then define a simple wrapper of your model as a predictor function which takes in a graph from the dataset and output the prediction probabilities for the positive class (as well as the loss from the forward pass, optionally). Some examples are [here](src/eval/evaluation.py#L99).
@@ -42,7 +53,7 @@ Then define a simple wrapper of your model as a predictor function which takes i
 We compare evaluations on the test set, as below:
 
 ```
-from src.evaluation import PygModelPredictor
+from src.eval.evaluation import PygModelPredictor
 
 botnet_dataset_test = BotnetDataset(name='chord', split='test', graph_format='pyg')
 predictor = PygModelPredictor(model)    # 'model' is some graph learning model
