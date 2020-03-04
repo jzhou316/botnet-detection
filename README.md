@@ -67,7 +67,9 @@ test_auroc = result_dict_avg['auroc']
 
 And we mainly compare the AUROC (area under the ROC curve) metric to compare across models.
 
-## Graph Neural Network Results
+## To Train a Graph Neural Network for Topological Botnet Detection
+
+We implemented a set of graph convolutional neural network models [here](./src/models_pyg/gcn_model.py) with PyTorch Geometric.
 
 We run graph neural network models on each of the topologies, and our results are as below:
 
