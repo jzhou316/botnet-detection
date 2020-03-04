@@ -117,7 +117,7 @@ class PygModelPredictor:
     def __call__(self, data):
         self.model.eval()
         data = data.to(self.device)
-        with torch.no_grad:
+        with torch.no_grad():
             # custom the below line to adjust to your model's input format for forward pass
             out = self.model(data.x, data.edge_index)
             loss = self.loss_fcn(out, data.y.long())
