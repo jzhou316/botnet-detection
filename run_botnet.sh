@@ -22,8 +22,8 @@ train () {
   --save_name "$topo"_model_lay12_rh1_rw_ep50.pt
 }
 
-#train 0 chord
-train 1 debru
+train 0 chord
+#train 1 debru
 #train 2 kadem
 #train 3 leet
 #train 0 c2
