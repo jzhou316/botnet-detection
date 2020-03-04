@@ -65,10 +65,10 @@ result_dict_avg, loss_avg = eval_predictor(botnet_dataset_test, predictor)
 print(f'Testing --- loss: {loss_avg:.5f}')
 print(' ' * 10 + ', '.join(['{}: {:.5f}'.format(k, v) for k, v in result_dict_avg.items()]))
 
-test_auroc = result_dict_avg['auroc']
+test_f1 = result_dict_avg['f1']
 ```
 
-And we mainly compare the AUROC (area under the ROC curve) metric to compare across models.
+And we mainly compare the average F1 score to compare across models.
 
 ## To Train a Graph Neural Network for Topological Botnet Detection
 
@@ -80,7 +80,7 @@ We run graph neural network models on each of the topologies, and our results ar
 
 <!--| Topology | Chord | de Bruijn | Kademlia | LEET-Chord | C2 | P2P |-->
 <!--|:---:|:---:|:---:|:---:|:---:|:---:|:---:|-->
-<!--| Test AUROC | | | | | | |-->
+<!--| Test F1 | | | | | | |-->
 <!--| Average Over Topologies <td colspan=6> 0 </td>|-->
 
 <table align="center">
@@ -95,7 +95,7 @@ We run graph neural network models on each of the topologies, and our results ar
   </tr>
     
   <tr>
-    <td> Test AUROC </td>
+    <td> Test F1 </td>
     <td>  </td>
     <td>  </td>
     <td>  </td>
