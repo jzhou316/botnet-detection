@@ -209,6 +209,10 @@ class BotnetDataset(Dataset):
         elif self.graph_format == 'dict':
             return graph_dict
 
+    def __iter__(self):
+        for i in range(self.num_graphs):
+            yield self[i]
+
     def __repr__(self):
         return f'{self.__class__.__name__}(topology: {self.name} | split: {self.split} | ' \
                f'#graphs: {len(self)} | graph format: {self.graph_format})'
