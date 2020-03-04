@@ -155,8 +155,8 @@ def train(model, args, train_loader, val_dataset, test_dataset, optimizer, crite
                 logging(' ' * 10 + ', '.join(['{}: {:.5f}'.format(k, v) for k, v in result_dict.items()]))
 
         result_dict_avg, loss_avg = eval_predictor(val_dataset, predictor)
-        logging(f'Validation --- epoch: {ep + 1}, loss: {loss_avg:.5f}, ' +
-                ', '.join(['{}: {:.5f}'.format(k, v) for k, v in result_dict_avg.items()]))
+        logging(f'Validation --- epoch: {ep + 1}, loss: {loss_avg:.5f}')
+        logging(' ' * 10 + ', '.join(['{}: {:.5f}'.format(k, v) for k, v in result_dict_avg.items()]))
 
         if scheduler is not None:
             scheduler.step(loss_avg)
