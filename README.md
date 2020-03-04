@@ -76,7 +76,12 @@ We implemented a set of graph convolutional neural network models [here](./src/m
 
 One can use our main [model API](./src/models_pyg/gcn_model.py#L9) to construct various basic GNN models, by specifing different number of layers, how in each layer node representations are updated (e.g. with direct message passing, MLP, or with graph attention), different choices of non-linear activation functions, whether to use residual connections and how many hops to connect, whether to add a final projection layer or not, etc. For a complete list of model configuration arguments, check our [example training script](./train_botnet.py#L71).
 
-We run graph neural network models on each of the topologies, and our results are as below:
+As an example, to train a GNN model on the topological botnet datasets, simply run:
+```
+bash run_botnet.sh
+```
+
+With the above configuration, we run graph neural network models (with 12 layers, 32 hidden dimension, and residual connections) on each of the topologies, and our results are as below:
 
 <!--| Topology | Chord | de Bruijn | Kademlia | LEET-Chord | C2 | P2P |-->
 <!--|:---:|:---:|:---:|:---:|:---:|:---:|:---:|-->
