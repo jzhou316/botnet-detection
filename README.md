@@ -69,7 +69,9 @@ And we mainly compare the AUROC (area under the ROC curve) metric to compare acr
 
 ## To Train a Graph Neural Network for Topological Botnet Detection
 
-We implemented a set of graph convolutional neural network models [here](./src/models_pyg/gcn_model.py) with PyTorch Geometric.
+We implemented a set of graph convolutional neural network models [here](./src/models_pyg) with PyTorch Geometric, and provide an example training script [here](./train_botnet.py).
+
+One can use our main [model API](./src/models_pyg/gcn_model.py#9) to construct various basic GNN models, by specifing different number of layers, how in each layer node representations are updated (e.g. with direct message passing, MLP, or with graph attention), different choices of non-linear activation functions, whether to use residual connections and how many hops to connect, whether to add a final projection layer or not, etc. For a complete list of model configuration arguments, check our [example training script](./train_botnet.py#71).
 
 We run graph neural network models on each of the topologies, and our results are as below:
 
@@ -106,4 +108,11 @@ We run graph neural network models on each of the topologies, and our results ar
 
 ## Citing
 
-Coming soon.
+```
+@article{kim2014convolutional,
+  title={Automating Botnet Detection with Graph Neural Networks},
+  author={Jiawei Zhou*, Zhiying Xu*, Alexander M. Rush, and Minlan Yu},
+  journal={AutoML for Networking and Systems Workshop of MLSys 2020 Conference},
+  year={2020}
+}
+```
