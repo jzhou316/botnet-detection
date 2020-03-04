@@ -103,7 +103,7 @@ With the above configuration, we run graph neural network models (with 12 layers
     <td> Test F1 (%) </td>
     <td>  99.061 </td>
     <td>  99.926 </td>
-    <td>  </td>
+    <td>  98.935 </td>
     <td>  99.231 </td>
     <td>  98.992 </td>
     <td>  98.692 </td>
