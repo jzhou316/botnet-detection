@@ -95,9 +95,9 @@ def eval_predictor(dataset, predictor):
     return result_dict_avg, loss_avg
 
 
-# ===========================================================================================
-# some examples of the 'predictor' model wrapper to be fed into the above evaluation function
-# ===========================================================================================
+# =================================================================================================================
+# some examples of the 'predictor' model wrapper to be fed into the above evaluation function (for PyG Data format)
+# =================================================================================================================
 class PygRandomPredictor:
     def __init__(self):
         # torch.manual_seed(0)

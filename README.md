@@ -37,7 +37,7 @@ from src.dataset_botnet import BotnetDataset
 from src.evaluation import eval_predictor
 ```
 
-Then define a simple wrapper of your model as a predictor function which takes in a graph from the dataset and output the prediction probabilities for the positive class (as well as the loss from the forward pass, optionally). Some examples are [here](./src/evaluation.py#L99).
+Then define a simple wrapper of your model as a predictor function which takes in a graph from the dataset and output the prediction probabilities for the positive class (as well as the loss from the forward pass, optionally). Some examples are [here](src/eval/evaluation.py#L99).
 
 We compare evaluations on the test set, as below:
 

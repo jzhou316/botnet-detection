@@ -6,12 +6,12 @@ import sys
 
 import torch
 
-from src.evaluation import eval_metrics, eval_predictor, PygModelPredictor
-from src.train_utils import time_since, logging_config
-from src.earlystop import EarlyStopping
-from src.model import GCNModel
-from src.dataset_botnet import BotnetDataset
-from src.dataloader import GraphDataLoader
+from src.eval.evaluation import eval_metrics, eval_predictor, PygModelPredictor
+from src.optim.train_utils import time_since, logging_config
+from src.optim.earlystop import EarlyStopping
+from src.models_pyg.gcn_model import GCNModel
+from src.data.dataset_botnet import BotnetDataset
+from src.data.dataloader import GraphDataLoader
 
 
 # ============== some default parameters =============
@@ -22,6 +22,7 @@ data_dir = './data/botnet'
 data_name = 'chord'
 batch_size = 2
 in_memory = True
+shuffle = False
 
 save_dir = './saved_models'
 save_name = 'temp.pt'
@@ -29,27 +30,25 @@ save_name = 'temp.pt'
 in_channels = 1
 enc_sizes = [32] * 12
 residual_hop = 1
-edge_gate = 'None'
+edge_gate = 'none'
 num_classes = 2
 nodemodel = 'additive'
 
-nheads = 1  # number of heads in multihead attention
-att_act = 'none'
+nheads = [1]  # number of heads in multihead attention, should be a list of length 1 or equal to #layers
+att_act = 'lrelu'
 att_dropout = 0
-att_dir = 'in'
+att_dir = 'in'  # should be 'out' to work for our featureless botnet graphs
 att_combine = 'cat'
-temperature = 0.1  # for hard attention using Gumbel-Softmax trick
-sample = False
 
-deg_norm = 'sm'
+deg_norm = 'rw'
 aggr = 'add'
 dropout = 0.0
-bias = False
+bias = True
 final = 'proj'    # 'none', 'proj'
 
-learning_rate = 0.001
-num_epochs = 5
-early_stop = 1
+learning_rate = 0.005
+num_epochs = 50
+early_stop = True
 
 # ====================================================
 
@@ -68,23 +67,38 @@ def parse_args():
     parser.add_argument('--batch_size', type=int, default=batch_size, help='training batch size')
     # parser.add_argument('--in_memory', action='store_true', help='whether to load all the data into memory')
     parser.add_argument('--in_memory', type=int, default=in_memory, help='whether to load all the data into memory')
+    parser.add_argument('--shuffle', type=int, default=shuffle, help='whether to shuffle training data')
     # model
     parser.add_argument('--in_channels', type=int, default=in_channels, help='input node feature size')
     parser.add_argument('--enc_sizes', type=int, nargs='*', default=enc_sizes, help='encoding node feature sizes')
+    parser.add_argument('--act', type=str, default='relu', choices=['none', 'lrelu', 'relu', 'elu'],
+                        help='non-linear activation function after adding residual')
+    parser.add_argument('--layer_act', type=str, default='none', choices=['none', 'lrelu', 'relu', 'elu'],
+                        help='non-linear activation function for each layer before residual')
     parser.add_argument('--residual_hop', type=int, default=residual_hop, help='residual per # layers')
-    parser.add_argument('--edge_gate', type=str, choices=['None', 'proj', 'free'], default=edge_gate, help='types of edge gate')
+    parser.add_argument('--edge_gate', type=str, choices=['none', 'proj', 'free'], default=edge_gate,
+                        help='types of independent edge gate')
     parser.add_argument('--n_classes', type=int, default=num_classes, help='number of classes for the output layer')
-    parser.add_argument('--nodemodel', type=str, default=nodemodel, choices=['additive', 'attention', 'hardattention'], help='name of node model class')
-    # attention (temperature is only for hard attention)
-    parser.add_argument('--nheads', type=int, default=nheads, help='number of heads in multihead attention')
-    parser.add_argument('--att_act', type=str, default=att_act, choices=['none', 'lrelu', 'relu'], help='attention activation function in multihead attention')
-    parser.add_argument('--att_dropout', type=float, default=att_dropout, help='attention dropout in multihead attention')
-    parser.add_argument('--att_dir', type=str, default=att_dir, help='attention direction in multihead attention')
-    parser.add_argument('--att_combine', type=str, default=att_combine, choices=['cat', 'add', 'mean'], help='multihead combination method in multihead attention')
-    parser.add_argument('--temperature', type=float, default=temperature, help='temperature in multihead HARD attention')
+    parser.add_argument('--nodemodel', type=str, default=nodemodel, choices=['additive', 'mlp', 'attention'],
+                        help='name of node model class')
+    parser.add_argument('--final', type=str, default=final, choices=['none', 'proj'], help='final output layer')
+    # attention
+    parser.add_argument('--nheads', type=int, nargs='*', default=nheads, help='number of heads in multihead attention')
+    parser.add_argument('--att_act', type=str, default=att_act, choices=['none', 'lrelu', 'relu', 'elu'],
+                        help='attention activation function in multihead attention')
+    parser.add_argument('--att_dropout', type=float, default=att_dropout,
+                        help='attention dropout in multihead attention')
+    parser.add_argument('--att_dir', type=str, default=att_dir, choices=['in', 'out'],
+                        help='attention direction in multihead attention')
+    parser.add_argument('--att_combine', type=str, default=att_combine, choices=['cat', 'add', 'mean'],
+                        help='multihead combination method in multihead attention')
+    parser.add_argument('--att_combine_out', type=str, default=att_combine, choices=['cat', 'add', 'mean'],
+                        help='multihead combination method in multihead attention for the last output attention layer')
     # other model arguments
-    parser.add_argument('--deg_norm', type=str, choices=['None', 'sm', 'rw'], default=deg_norm, help='degree normalization method')
-    parser.add_argument('--aggr', type=str, choices=['add', 'mean', 'max'], default=aggr, help='feature aggregation method')
+    parser.add_argument('--deg_norm', type=str, choices=['none', 'sm', 'rw'], default=deg_norm,
+                        help='degree normalization method')
+    parser.add_argument('--aggr', type=str, choices=['add', 'mean', 'max'], default=aggr,
+                        help='feature aggregation method')
     parser.add_argument('--dropout', type=float, default=dropout, help='dropout probability')
     parser.add_argument('--bias', type=int, default=bias, help='whether to include bias in the model')
     # optimization
@@ -178,7 +192,7 @@ if __name__ == '__main__':
     args = parse_args()
     os.makedirs(args.save_dir, exist_ok=True)
 
-    ########## random seeds and device
+    # ========== random seeds and device
     random.seed(args.seed)
     torch.manual_seed(args.seed)
     # torch.backends.cudnn.deterministic = True
@@ -186,7 +200,7 @@ if __name__ == '__main__':
 
     device = torch.device(f'cuda:{args.devid}') if args.devid > -1 else torch.device('cpu')
 
-    ########## logging setup
+    # ========== logging setup
     log_name = os.path.splitext(args.save_name)[0]
     logger = logging_config(__name__, folder=args.save_dir, name=log_name, filemode=args.logmode)
     # logger = logging_config(os.path.basename(__file__), folder=args.save_dir, name=log_name, filemode=args.logmode)
@@ -198,20 +212,51 @@ if __name__ == '__main__':
     logger.info(time.ctime())
     logger.info('-' * 30)
 
-    ########## load the dataset
+    # ========== load the dataset
     logger.info('loading dataset...')
 
     train_ds = BotnetDataset(name=args.data_name, root=args.data_dir, split='train',
-                             in_memory=args.in_memory, graph_format='pyg')
+                             in_memory=bool(args.in_memory), graph_format='pyg')
     val_ds = BotnetDataset(name=args.data_name, root=args.data_dir, split='val',
-                             in_memory=args.in_memory, graph_format='pyg')
+                             in_memory=bool(args.in_memory), graph_format='pyg')
     test_ds = BotnetDataset(name=args.data_name, root=args.data_dir, split='test',
-                             in_memory=args.in_memory, graph_format='pyg')
+                             in_memory=bool(args.in_memory), graph_format='pyg')
 
     train_loader = GraphDataLoader(train_ds, batch_size=args.batch_size, shuffle=bool(args.shuffle), num_workers=0)
 
-    ########## define the model, optimizer, and loss
-    model = GCNModel()
+    # ========== define the model, optimizer, and loss
+    if len(args.nheads) < len(args.enc_sizes):
+        assert len(args.nheads) == 1
+        args.nheads = args.nheads * len(args.enc_sizes)
+    elif len(args.nheads) == len(args.enc_sizes):
+        pass
+    else:
+        raise ValueError
+
+    final_layer_config = {'att_combine': args.att_combine_out}
+
+    model = GCNModel(args.in_channels,
+                     args.enc_sizes,
+                     args.n_classes,
+                     non_linear=args.act,
+                     non_linear_layer_wise=args.layer_act,
+                     residual_hop=args.residual_hop,
+                     dropout=args.dropout,
+                     final_layer_config=final_layer_config,
+                     final_type=args.final,
+                     pred_on='node',
+                     nodemodel=args.nodemodel,
+                     deg_norm=args.deg_norm,
+                     edge_gate=args.edge_gate,
+                     aggr=args.aggr,
+                     bias=bool(args.bias),
+                     nheads=args.nheads,
+                     att_act=args.att_act,
+                     att_dropout=args.att_dropout,
+                     att_dir=args.att_dir,
+                     att_combine=args.att_combine,
+                     )
+
     logger.info('model ' + '-' * 10)
     logger.info(repr(model))
     model.to(device)
@@ -220,6 +265,6 @@ if __name__ == '__main__':
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.25, patience=1)
 
-    ########## train the model
+    # ========== train the model
     train(model, args, train_loader, val_ds, test_ds, optimizer, criterion,
           scheduler, logger)
