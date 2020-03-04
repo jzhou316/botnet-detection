@@ -110,7 +110,7 @@ With the above configuration, we run graph neural network models (with 12 layers
   </tr>
   <tr>
     <td style="text-align:center"> Average </td>
-    <td colspan="6"> 0 </td>
+    <td colspan="6"> 99.140 </td>
   </tr>
 </table>
 
