@@ -1,4 +1,7 @@
 # botnet-detection
+
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 Topological botnet detection datasets and automatic detection with graph neural networks.
 
 ## To Load the Botnet Data
