@@ -100,13 +100,13 @@ With the above configuration, we run graph neural network models (with 12 layers
   </tr>
     
   <tr>
-    <td> Test F1 </td>
+    <td> Test F1 (%) </td>
+    <td>  99.061 </td>
+    <td>  99.926 </td>
     <td>  </td>
-    <td>  </td>
-    <td>  </td>
-    <td>  </td>
-    <td>  </td>
-    <td>  </td>
+    <td>  99.231 </td>
+    <td>  98.992 </td>
+    <td>  98.692 </td>
   </tr>
   <tr>
     <td style="text-align:center"> Average </td>
