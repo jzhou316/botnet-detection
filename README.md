@@ -15,9 +15,8 @@ python setup.py install
 
 ## To Load the Botnet Data
 
-Import `BotnetDataset` class by `from botdet.data.dataset_botnet import BotnetDataset`.
+We provide standard and easy-to-use dataset and data loaders, which can be compatible with most of the graph learning libraries by specifying the `graph_format` argument:
 
-Load the botnet dataset, which can be compatible with most of the graph learning libraries by specifying the `graph_format` argument:
 ```
 from botdet.data.dataset_botnet import BotnetDataset
 
