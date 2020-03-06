@@ -51,19 +51,15 @@ The data loader handles automatic batching and is agnostic to the specific graph
 
 ## To Evaluate a Model Predictor
 
-We prepare standardized evaluators for easy evaluation and comparison of different models.
-Load the dataset class and the evaluation function as below:
+We prepare a standardized evaluator for easy evaluation and comparison of different models.
+First load the dataset class with `BotnetDataset` and the evaluation function `eval_predictor`.
+Then define a simple wrapper of your model as a predictor function (see [examples](botdet/eval/evaluation.py#L99)), which takes in a graph from the dataset and returns the prediction probabilities for the positive class (as well as the loss from the forward pass, optionally).
+
+For example, to get evaluations on the `chord` test set:
 
 ```
 from botdet.data.dataset_botnet import BotnetDataset
 from botdet.eval.evaluation import eval_predictor
-```
-
-Then define a simple wrapper of your model as a predictor function which takes in a graph from the dataset and returns the prediction probabilities for the positive class (as well as the loss from the forward pass, optionally). Some examples are [here](botdet/eval/evaluation.py#L99).
-
-To get evaluations on the test set:
-
-```
 from botdet.eval.evaluation import PygModelPredictor
 
 botnet_dataset_test = BotnetDataset(name='chord', split='test', graph_format='pyg')
