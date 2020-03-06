@@ -1,4 +1,4 @@
-from src.data.dataset_botnet import BotnetDataset
+from botdet.data.dataset_botnet import BotnetDataset
 
 
 if __name__ == '__main__':

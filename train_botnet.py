@@ -6,12 +6,12 @@ import sys
 
 import torch
 
-from src.eval.evaluation import eval_metrics, eval_predictor, PygModelPredictor
-from src.optim.train_utils import time_since, logging_config
-from src.optim.earlystop import EarlyStopping
-from src.models_pyg.gcn_model import GCNModel
-from src.data.dataset_botnet import BotnetDataset
-from src.data.dataloader import GraphDataLoader
+from botdet.eval.evaluation import eval_metrics, eval_predictor, PygModelPredictor
+from botdet.optim.train_utils import time_since, logging_config
+from botdet.optim.earlystop import EarlyStopping
+from botdet.models_pyg.gcn_model import GCNModel
+from botdet.data.dataset_botnet import BotnetDataset
+from botdet.data.dataloader import GraphDataLoader
 
 
 # ============== some default parameters =============

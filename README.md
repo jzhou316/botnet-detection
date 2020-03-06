@@ -6,11 +6,11 @@ Topological botnet detection datasets and automatic detection with graph neural 
 
 ## To Load the Botnet Data
 
-Include the directory `src` in your Python search path (can be done via `sys.path.insert(0, 'path_to_src')`), and import `BotnetDataset` class by `from src.data.dataset_botnet import BotnetDataset`.
+Include the directory `src` in your Python search path (can be done via `sys.path.insert(0, 'path_to_src')`), and import `BotnetDataset` class by `from botdet.data.dataset_botnet import BotnetDataset`.
 
 Load the botnet dataset, which can be compatible with most of the graph learning libraries by specifying the `graph_format` argument:
 ```
-from src.data.dataset_botnet import BotnetDataset
+from botdet.data.dataset_botnet import BotnetDataset
 
 botnet_dataset_train = BotnetDataset(name='chord', split='train', graph_format='pyg')
 botnet_dataset_val = BotnetDataset(name='chord', split='val', graph_format='pyg')
@@ -35,7 +35,7 @@ Based on different choices of the above argument, when indexing the botnet datas
 
 Construct the data loader with automatic batching (agnostic to the specific graph learning library):
 ```
-from src.data.dataloader import GraphDataLoader
+from botdet.data.dataloader import GraphDataLoader
 
 train_loader = GraphDataLoader(botnet_dataset_train, batch_size=2, shuffle=False, num_workers=0)
 val_loader = GraphDataLoader(botnet_dataset_val, batch_size=1, shuffle=False, num_workers=0)
@@ -47,16 +47,16 @@ test_loader = GraphDataLoader(botnet_dataset_test, batch_size=1, shuffle=False, 
 Include the directory `src` in your Python search path (can be done via `sys.path.insert(0, 'path_to_src')`), and load the dataset class and the evaluation function as below:
 
 ```
-from src.data.dataset_botnet import BotnetDataset
-from src.eval.evaluation import eval_predictor
+from botdet.data.dataset_botnet import BotnetDataset
+from botdet.eval.evaluation import eval_predictor
 ```
 
-Then define a simple wrapper of your model as a predictor function which takes in a graph from the dataset and output the prediction probabilities for the positive class (as well as the loss from the forward pass, optionally). Some examples are [here](src/eval/evaluation.py#L99).
+Then define a simple wrapper of your model as a predictor function which takes in a graph from the dataset and output the prediction probabilities for the positive class (as well as the loss from the forward pass, optionally). Some examples are [here](botdet/eval/evaluation.py#L99).
 
 We compare evaluations on the test set, as below:
 
 ```
-from src.eval.evaluation import PygModelPredictor
+from botdet.eval.evaluation import PygModelPredictor
 
 botnet_dataset_test = BotnetDataset(name='chord', split='test', graph_format='pyg')
 predictor = PygModelPredictor(model)    # 'model' is some graph learning model
@@ -72,9 +72,9 @@ And we mainly compare the average F1 score to compare across models.
 
 ## To Train a Graph Neural Network for Topological Botnet Detection
 
-We implemented a set of graph convolutional neural network models [here](./src/models_pyg) with PyTorch Geometric, and provide an example training script [here](./train_botnet.py).
+We implemented a set of graph convolutional neural network models [here](./botdet/models_pyg) with PyTorch Geometric, and provide an example training script [here](./train_botnet.py).
 
-One can use our main [model API](./src/models_pyg/gcn_model.py#L9) to construct various basic GNN models, by specifing different number of layers, how in each layer node representations are updated (e.g. with direct message passing, MLP, or with graph attention), different choices of non-linear activation functions, whether to use residual connections and how many hops to connect, whether to add a final projection layer or not, etc. For a complete list of model configuration arguments, check our [example training script](./train_botnet.py#L71).
+One can use our main [model API](./botdet/models_pyg/gcn_model.py#L9) to construct various basic GNN models, by specifing different number of layers, how in each layer node representations are updated (e.g. with direct message passing, MLP, or with graph attention), different choices of non-linear activation functions, whether to use residual connections and how many hops to connect, whether to add a final projection layer or not, etc. For a complete list of model configuration arguments, check our [example training script](./train_botnet.py#L71).
 
 As an example, to train a GNN model on the topological botnet datasets, simply run:
 ```
