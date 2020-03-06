@@ -13,7 +13,7 @@ from setuptools import find_packages, setup, Command
 
 # Package meta-data.
 NAME = 'botdet'
-DESCRIPTION = 'Topological botnet detection datasets and graph neural network applications'
+DESCRIPTION = 'Topological botnet detection datasets with graph neural network applications'
 URL = 'https://github.com/jzhou316/botnet-detection'
 EMAIL = 'jzhou02@g.harvard.edu'
 AUTHOR = 'Jiawei Zhou'
