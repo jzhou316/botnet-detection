@@ -4,9 +4,18 @@
 
 Topological botnet detection datasets and automatic detection with graph neural networks.
 
+## Installation
+
+From source 
+```
+git clone https://github.com/jzhou316/botnet-detection
+cd botnet-detection
+python setup.py install
+```
+
 ## To Load the Botnet Data
 
-Include the directory `src` in your Python search path (can be done via `sys.path.insert(0, 'path_to_src')`), and import `BotnetDataset` class by `from botdet.data.dataset_botnet import BotnetDataset`.
+Import `BotnetDataset` class by `from botdet.data.dataset_botnet import BotnetDataset`.
 
 Load the botnet dataset, which can be compatible with most of the graph learning libraries by specifying the `graph_format` argument:
 ```
@@ -44,7 +53,7 @@ test_loader = GraphDataLoader(botnet_dataset_test, batch_size=1, shuffle=False, 
 
 ## To Evaluate a Model Predictor
 
-Include the directory `src` in your Python search path (can be done via `sys.path.insert(0, 'path_to_src')`), and load the dataset class and the evaluation function as below:
+Load the dataset class and the evaluation function as below:
 
 ```
 from botdet.data.dataset_botnet import BotnetDataset
