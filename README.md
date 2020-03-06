@@ -15,17 +15,22 @@ python setup.py install
 
 ## To Load the Botnet Data
 
-We provide standard and easy-to-use dataset and data loaders, which can be compatible with most of the graph learning libraries by specifying the `graph_format` argument:
+We provide standard and easy-to-use dataset and data loaders, which automatically handle the dataset dnowloading as well as standard data splitting, and can be compatible with most of the graph learning libraries by specifying the `graph_format` argument:
 
 ```
 from botdet.data.dataset_botnet import BotnetDataset
+from botdet.data.dataloader import GraphDataLoader
 
 botnet_dataset_train = BotnetDataset(name='chord', split='train', graph_format='pyg')
 botnet_dataset_val = BotnetDataset(name='chord', split='val', graph_format='pyg')
 botnet_dataset_test = BotnetDataset(name='chord', split='test', graph_format='pyg')
+
+train_loader = GraphDataLoader(botnet_dataset_train, batch_size=2, shuffle=False, num_workers=0)
+val_loader = GraphDataLoader(botnet_dataset_val, batch_size=1, shuffle=False, num_workers=0)
+test_loader = GraphDataLoader(botnet_dataset_test, batch_size=1, shuffle=False, num_workers=0)
 ```
 
-The choices for `name` are (indicating different botnet topologies):
+The choices for dataset `name` are (indicating different botnet topologies):
 - 'chord' (synthetic, 10k botnet nodes)
 - 'debru' (synthetic, 10k botnet nodes)
 - 'kadem' (synthetic, 10k botnet nodes)
@@ -33,25 +38,20 @@ The choices for `name` are (indicating different botnet topologies):
 - 'c2' (real, ~3k botnet nodes)
 - 'p2p' (real, ~3k botnet nodes)
 
-The choices for `graph_format` are (for different graph data format according to different graph libraries):
+The choices for dataset `graph_format` are (for different graph data format according to different graph libraries):
 - 'pyg' for [PyTorch Geometric](https://github.com/rusty1s/pytorch_geometric)
 - 'dgl' for [DGL](https://github.com/dmlc/dgl) 
 - 'nx' for [NetworkX](https://github.com/networkx/networkx)
-- 'dict' for plain python dictionary
+- 'dict' for [plain python dictionary](https://docs.python.org/3/tutorial/datastructures.html#dictionaries)
 
 Based on different choices of the above argument, when indexing the botnet dataset object, it will return a corresponding graph data object defined by the specified graph library.
 
-Construct the data loader with automatic batching (agnostic to the specific graph learning library):
-```
-from botdet.data.dataloader import GraphDataLoader
+The data loader handles automatic batching and is agnostic to the specific graph learning library.
 
-train_loader = GraphDataLoader(botnet_dataset_train, batch_size=2, shuffle=False, num_workers=0)
-val_loader = GraphDataLoader(botnet_dataset_val, batch_size=1, shuffle=False, num_workers=0)
-test_loader = GraphDataLoader(botnet_dataset_test, batch_size=1, shuffle=False, num_workers=0)
-```
 
 ## To Evaluate a Model Predictor
 
+We prepare standardized evaluators for easy evaluation and comparison of different models.
 Load the dataset class and the evaluation function as below:
 
 ```
@@ -59,9 +59,9 @@ from botdet.data.dataset_botnet import BotnetDataset
 from botdet.eval.evaluation import eval_predictor
 ```
 
-Then define a simple wrapper of your model as a predictor function which takes in a graph from the dataset and output the prediction probabilities for the positive class (as well as the loss from the forward pass, optionally). Some examples are [here](botdet/eval/evaluation.py#L99).
+Then define a simple wrapper of your model as a predictor function which takes in a graph from the dataset and returns the prediction probabilities for the positive class (as well as the loss from the forward pass, optionally). Some examples are [here](botdet/eval/evaluation.py#L99).
 
-We compare evaluations on the test set, as below:
+To get evaluations on the test set:
 
 ```
 from botdet.eval.evaluation import PygModelPredictor
