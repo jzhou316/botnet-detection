@@ -198,7 +198,7 @@ class NodeModelAdditive(NodeModelBase):
         if self.bias is not None:
             zeros(self.bias)
 
-    def forward(self, x, edge_index, edge_attr=None, deg=None, edge_weight=None):
+    def forward(self, x, edge_index, edge_attr=None, deg=None, edge_weight=None, **kwargs):
         # project node features, resulting size (N, C_out)
         x = torch.matmul(x, self.weight_node)
 
@@ -299,7 +299,7 @@ class NodeModelMLP(NodeModelBase):
 
         # self.mlp.reset_parameters()    # this was done automatically when nn.Linear class was initialized
 
-    def forward(self, x, edge_index, edge_attr=None, deg=None, edge_weight=None):
+    def forward(self, x, edge_index, edge_attr=None, deg=None, edge_weight=None, **kwargs):
         if self.deg_norm == 'none':
             row, col = edge_index
             x_j = x[row]  # size (E, C_in)
