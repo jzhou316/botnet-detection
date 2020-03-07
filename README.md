@@ -72,7 +72,7 @@ print(' ' * 10 + ', '.join(['{}: {:.5f}'.format(k, v) for k, v in result_dict_av
 test_f1 = result_dict_avg['f1']
 ```
 
-And we mainly compare the average F1 score to compare across models.
+And we mainly use the average F1 score to compare across models.
 
 ## To Train a Graph Neural Network for Topological Botnet Detection
 
