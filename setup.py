@@ -22,12 +22,21 @@ VERSION = '0.1.0'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    # 'requests', 'maya', 'records',
+    'torch',
+    'numpy',
+    'h5py',
+    'deepdish',
+    'tqdm',
+    'six',
+    'scikit-learn',
 ]
 
 # What packages are optional?
 EXTRAS = {
     # 'fancy feature': ['django'],
+    'PyTorch Geometric': ['torch-geometric'],
+    'DGL': ['dgl'],
+    'NetworkX': ['networkx']
 }
 
 # The rest you shouldn't have to touch too much :)
