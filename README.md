@@ -86,8 +86,9 @@ And we mainly use the average F1 score to compare across models.
 
 We provide a set of graph convolutional neural network (GNN) models [here](./botdet/models_pyg) with PyTorch Geometric, along with the corresponding [training script](./train_botnet.py).
 Various basic GNN models can be constructed and tested by specifing configuration arguments:
-- number of layers
-- node updating model each layer (e.g. with direct message passing, MLP, or with graph attention)
+- number of layers, hidden size
+- node updating model each layer (e.g. direct message passing, MLP, gated edges, or graph attention)
+- message normalization
 - residual hops
 - final layer type
 - etc. (check the [model API]((./botdet/models_pyg/gcn_model.py#L9)) and the [training script](./train_botnet.py#L71))
