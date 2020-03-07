@@ -76,7 +76,7 @@ And we mainly compare the average F1 score to compare across models.
 
 ## To Train a Graph Neural Network for Topological Botnet Detection
 
-We implemented a set of graph convolutional neural network models [here](./botdet/models_pyg) with PyTorch Geometric, and provide an example training script [here](./train_botnet.py).
+We provide a set of graph convolutional neural network models [here](./botdet/models_pyg) with PyTorch Geometric, and provide an example training pipeline [here](./train_botnet.py).
 
 One can use our main [model API](./botdet/models_pyg/gcn_model.py#L9) to construct various basic GNN models, by specifing different number of layers, how in each layer node representations are updated (e.g. with direct message passing, MLP, or with graph attention), different choices of non-linear activation functions, whether to use residual connections and how many hops to connect, whether to add a final projection layer or not, etc. For a complete list of model configuration arguments, check our [example training script](./train_botnet.py#L71).
 
