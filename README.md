@@ -79,7 +79,7 @@ And we mainly compare the average F1 score to compare across models.
 We provide a set of graph convolutional neural network (GNN) models [here](./botdet/models_pyg) with PyTorch Geometric, along with the corresponding [training script](./train_botnet.py).
 Various basic GNN models can be constructed by specifing:
 - number of layers
-- how node representations are updated each layer (e.g. with direct message passing, MLP, or with graph attention)
+- node updating model each layer (e.g. with direct message passing, MLP, or with graph attention)
 - residual hops
 - final layer type
 - etc. (check the [model API]((./botdet/models_pyg/gcn_model.py#L9)) and the [training script](./train_botnet.py#L71))
@@ -91,7 +91,7 @@ As an example, to train a GNN model on the topological botnet datasets, simply r
 bash run_botnet.sh
 ```
 
-With the above configuration, we run graph neural network models (with 12 layers, 32 hidden dimension, random walk normalization, and residual connections) on each of the topologies, and our results are as below:
+With the above configuration, we run graph neural network models (with 12 layers, 32 hidden dimension, random walk normalization, and residual connections) on each of the topologies, and the results are as below:
 
 <!--| Topology | Chord | de Bruijn | Kademlia | LEET-Chord | C2 | P2P |-->
 <!--|:---:|:---:|:---:|:---:|:---:|:---:|:---:|-->
