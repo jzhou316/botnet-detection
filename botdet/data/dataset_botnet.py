@@ -24,9 +24,16 @@ class BotnetDataset(Dataset):
     The graphs are stored in HDF5 files.
     
     Args:
-        path (str): path of the HDF5 file containing a series of graph data
-        num_graphs (int, optional): number of graphs in the dataset
-        in_memory (bool, optional): whether to read all the graphs into memory. Default: False
+        name (str): name of the botnet topology; choosing from ['chord', 'debru', 'kadem', 'leet', 'c2', 'p2p'].
+        root (str): path of the root directory to download and store the botnet data.
+        split (str): data split; choosing from ['train', 'val', 'test'].
+        graph_format (str): data example type for different graph learning libraries. Choose from ['pyg', 'dgl', 'nx', 'dict'].
+            Default: 'pyg'.
+        split_idx (dict, optional): a dictionary containing the graph indexes for each of the 'train'/'val'/'test' split.
+            None for our default split.
+        add_nfeat_ones (bool, optional): whether to add blank node feature of ones in the dataset in the preprocessing, as input
+            node features for the graph neural network models. Default: True.
+        in_memory (bool, optional): whether to read all the graphs into memory; if not directly read from hard drive. Default: True.
     """
 
     # url = 'https://sandbox.zenodo.org/record/503403/files/botnet_chord.tar.gz'
@@ -37,8 +44,8 @@ class BotnetDataset(Dataset):
             'c2': 'https://zenodo.org/record/3689089/files/botnet_c2.tar.gz',
             'p2p': 'https://zenodo.org/record/3689089/files/botnet_p2p.tar.gz'}
 
-    def __init__(self, name='chord', root='data/botnet', split='train', split_idx=None, add_nfeat_ones=True,
-                 in_memory=True, graph_format='pyg'):
+    def __init__(self, name='chord', root='data/botnet', split='train', graph_format='pyg', split_idx=None, add_nfeat_ones=True,
+                 in_memory=True):
         super().__init__()
         assert name in ['chord', 'debru', 'kadem', 'leet', 'c2', 'p2p']
         assert split in ['train', 'val', 'test']
@@ -112,7 +119,6 @@ class BotnetDataset(Dataset):
         return self._graph_format
 
     def download(self):
-        # breakpoint()
         if osp.exists(self.raw_paths[0]) or files_exist(self.raw_paths[1:3]):
             return
 
@@ -130,14 +136,13 @@ class BotnetDataset(Dataset):
             exit(-1)
 
     def process(self):
-        # breakpoint()
         if files_exist(self.processed_paths):
             return
 
         if not files_exist(self.raw_paths[1:3]):
             assert osp.exists(self.raw_paths[0])
             path = extract_tar(self.raw_paths[0], self.raw_dir)
-        #             os.unlink(self.raw_paths[0])
+            # os.unlink(self.raw_paths[0])
 
         print('Processing...')
         makedirs(self.processed_dir)
