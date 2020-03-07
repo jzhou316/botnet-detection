@@ -10,7 +10,7 @@ Topological botnet detection datasets and automatic detection with graph neural 
   <img width="30%" src=./botnet_examples/p2p.png />
 </p>
 
-The datasets are a collection of different botnet topologyies overlaid onto real network traffics, containing graphs of relatively large scale and totally featureless.
+The datasets are a collection of different botnet topologyies overlaid onto normal background network traffic, containing featureless graphs of relatively large scale.
 
 ## Installation
 
