@@ -56,7 +56,7 @@ class NodeModelAttention(NodeModelBase):
         glorot(self.att_weight)
         zeros(self.bias)
 
-    def forward(self, x, edge_index, edge_attr=None, deg=None, edge_weight=None):
+    def forward(self, x, edge_index, edge_attr=None, deg=None, edge_weight=None, attn_store=None, **kwargs):
         """
         'deg' and 'edge_weight' are not used. Just to be consistent for API.
         """
@@ -86,7 +86,7 @@ class NodeModelAttention(NodeModelBase):
             entropy = scatter_('add', -alpha * torch.log(alpha + 1e-16), edge_index[0], dim_size=x.size(0))
         else:    # size (N, nheads)
             entropy = scatter_('add', -alpha * torch.log(alpha + 1e-16), edge_index[1], dim_size=x.size(0))
-#        breakpoint()
+        # breakpoint()
         entropy = entropy[deg > 100, :].mean()
         entropy_max = (torch.log(deg[deg > 100] + 1e-16)).mean()
         print(f'average attention entropy {entropy.item()} (average max entropy {entropy_max.item()})')
@@ -109,6 +109,9 @@ class NodeModelAttention(NodeModelBase):
         # add bias
         if self.bias is not None:
             x = x + self.bias
+  
+        if attn_store is not None:    # attn_store is a callback list in case we want to get the attention scores out
+            attn_store.append(alpha)
 
         return x
 
