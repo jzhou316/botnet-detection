@@ -91,7 +91,7 @@ As an example, to train a GNN model on the topological botnet datasets, simply r
 bash run_botnet.sh
 ```
 
-With the above configuration, we run graph neural network models (with 12 layers, 32 hidden dimension, random walk normalization, and residual connections) on each of the topologies, and the results are as below:
+With the above configuration, we run graph neural network models (with 12 layers, 32 hidden dimension, random walk normalization, and residual connections) on each of the topologies, and results are as below:
 
 <!--| Topology | Chord | de Bruijn | Kademlia | LEET-Chord | C2 | P2P |-->
 <!--|:---:|:---:|:---:|:---:|:---:|:---:|:---:|-->
