@@ -4,7 +4,7 @@
 
 Topological botnet detection datasets and automatic detection with graph neural networks.
 
-The graphs are of relatively large scale and featureless. Each dataset contains a specific botnet topology, with 960 graphs in total, randomly split to train/val/test sets. There are labels on both nodes and edges indicating whether they were in the botnet (evil) community. Learning tasks could target at predicting on nodes to detect whether they are botnet nodes, or recovering the whole botnet community by also predicting on edges as whether they belong to the original botnet.
+<!--The graphs are of relatively large scale and featureless. Each dataset contains a specific botnet topology, with 960 graphs in total, randomly split to train/val/test sets. There are labels on both nodes and edges indicating whether they were in the botnet (evil) community. Learning tasks could target at predicting on nodes to detect whether they are botnet nodes, or recovering the whole botnet community by also predicting on edges as whether they belong to the original botnet.-->
 
 ## Installation
 
@@ -125,6 +125,10 @@ With the above configuration, we run graph neural network models (with 12 layers
     <td colspan="6"> 99.140 </td>
   </tr>
 </table>
+
+### Note
+
+We also provide labels on the edges, which can be used for the complete botnet community recovery tasks.
 
 ## Citing
 
