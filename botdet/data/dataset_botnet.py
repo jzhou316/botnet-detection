@@ -79,9 +79,11 @@ class BotnetDataset(Dataset):
             self.data_type = 'dict'
             self.num_graphs = self.data['num_graphs']
         else:
-            self.data = h5py.File(self.path, 'r')
+            # self.data = h5py.File(self.path, 'r')
+            self.data = None    # defer opening file in each process to make multiprocessing work
             self.data_type = 'file'
-            self.num_graphs = self.data.attrs['num_graphs']
+            with h5py.File(self.path, 'r') as f:
+                self.num_graphs = f.attrs['num_graphs']
 
     @property
     def raw_dir(self):
@@ -201,6 +203,9 @@ class BotnetDataset(Dataset):
         if self.data_type == 'dict':
             graph_dict = self.data[str(index)]
         elif self.data_type == 'file':
+            if self.data is None:
+                # only open once in each process
+                self.data = h5py.File(self.path, 'r')
             graph_dict = h5group_to_dict(self.data[str(index)])
         else:
             raise ValueError
