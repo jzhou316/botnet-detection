@@ -39,18 +39,18 @@ test_loader = GraphDataLoader(botnet_dataset_test, batch_size=1, shuffle=False, 
 ```
 
 The choices for dataset `name` are (indicating different botnet topologies):
-- 'chord' (synthetic, 10k botnet nodes)
-- 'debru' (synthetic, 10k botnet nodes)
-- 'kadem' (synthetic, 10k botnet nodes)
-- 'leet' (synthetic, 10k botnet nodes)
-- 'c2' (real, ~3k botnet nodes)
-- 'p2p' (real, ~3k botnet nodes)
+- `'chord'` (synthetic, 10k botnet nodes)
+- `'debru'` (synthetic, 10k botnet nodes)
+- `'kadem'` (synthetic, 10k botnet nodes)
+- `'leet'` (synthetic, 10k botnet nodes)
+- `'c2'` (real, ~3k botnet nodes)
+- `'p2p'` (real, ~3k botnet nodes)
 
 The choices for dataset `graph_format` are (for different graph data format according to different graph libraries):
-- 'pyg' for [PyTorch Geometric](https://github.com/rusty1s/pytorch_geometric)
-- 'dgl' for [DGL](https://github.com/dmlc/dgl) 
-- 'nx' for [NetworkX](https://github.com/networkx/networkx)
-- 'dict' for [plain python dictionary](https://docs.python.org/3/tutorial/datastructures.html#dictionaries)
+- `'pyg'` for [PyTorch Geometric](https://github.com/rusty1s/pytorch_geometric)
+- `'dgl'` for [DGL](https://github.com/dmlc/dgl) 
+- `'nx'` for [NetworkX](https://github.com/networkx/networkx)
+- `'dict'` for [plain python dictionary](https://docs.python.org/3/tutorial/datastructures.html#dictionaries)
 
 Based on different choices of the above argument, when indexing the botnet dataset object, it will return a corresponding graph data object defined by the specified graph library.
 
