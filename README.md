@@ -63,7 +63,7 @@ We prepare a standardized evaluator for easy evaluation and comparison of differ
 First load the dataset class with `BotnetDataset` and the evaluation function `eval_predictor`.
 Then define a simple wrapper of your model as a predictor function (see [examples](botdet/eval/evaluation.py#L99)), which takes in a graph from the dataset and returns the prediction probabilities for the positive class (as well as the loss from the forward pass, optionally).
 
-For example, to get evaluations on the `chord` test set:
+We mainly use the average F1 score to compare across models. For example, to get evaluations on the `chord` test set:
 
 ```
 from botdet.data.dataset_botnet import BotnetDataset
@@ -79,8 +79,6 @@ print(' ' * 10 + ', '.join(['{}: {:.5f}'.format(k, v) for k, v in result_dict_av
 
 test_f1 = result_dict_avg['f1']
 ```
-
-And we mainly use the average F1 score to compare across models.
 
 ## To Train a Graph Neural Network for Topological Botnet Detection
 
