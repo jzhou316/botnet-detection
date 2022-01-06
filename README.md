@@ -1,3 +1,7 @@
+---
+# Note: this project has been moved and maintained at [harvardnlp/botnet-detection](https://github.com/harvardnlp/botnet-detection).
+---
+
 # botnet-detection
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
